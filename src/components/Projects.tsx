@@ -1,67 +1,83 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import FloatingElements from "./FloatingElements";
+import { RevealHeading, TiltCard } from "./motion-kit";
 
-const projects = [
+const projects: {
+  title: string;
+  type: string;
+  description: string;
+  technologies: string[];
+  link?: string;
+}[] = [
   {
-    title: "PTE Education Platform",
-    description: "Full-stack PTE exam preparation platform with speech recognition, PTE score generation, and appointment booking system (similar to Calendly).",
-    technologies: ["Next.js", "React Native", "Laravel", "PostgreSQL", "AWS"],
-    link: "https://www.aigmapte.com",
-    gradient: "from-violet-500 to-purple-500",
-    icon: "🎓",
+    title: "RevenueAI",
+    type: "AI SaaS",
+    description:
+      "Multi-tenant AI lead-response platform for Australian service businesses, with lead qualification, staff handoff, booking, follow-ups, messaging channel integrations, Stripe billing, and 800+ automated test cases.",
+    technologies: ["Next.js", "TypeScript", "Supabase", "OpenAI API", "Stripe", "AWS EC2"],
   },
   {
     title: "BurmeseMart E-Commerce",
-    description: "Myanmar e-commerce marketplace serving both local and global markets, with full payment integration (Stripe, Dinger) and admin CMS.",
-    technologies: ["Laravel", "Vue.js", "MySQL", "AWS S3"],
+    type: "E-Commerce",
+    description:
+      "Multi-region e-commerce web application for Myanmar and global markets, supporting product workflows, admin management, AWS S3, and payment processing.",
+    technologies: ["Laravel", "Vue.js", "MySQL", "AWS S3", "Payment Integration"],
     link: "https://burmesemart.com",
-    gradient: "from-purple-500 to-fuchsia-500",
-    icon: "🛍️",
   },
   {
-    title: "Student Web Portal",
-    description: "CMS-based student management portal for SmartEdu Globe with course tracking, enrollment management, and real-time updates.",
-    technologies: ["React", "Node.js", "PostgreSQL", "Azure DevOps"],
-    link: "https://smarteduglobe.com",
-    gradient: "from-indigo-500 to-violet-500",
-    icon: "📚",
-  },
-  {
-    title: "EDMS",
-    description: "Electronic Document Management System with secure workflows, role-based access control, and document versioning for enterprise use.",
+    title: "Electronic Document Management System",
+    type: "Enterprise",
+    description:
+      "Document management system for enterprise document handling, approval workflows, tracking, and access management.",
     technologies: ["Laravel", "Vue.js", "MySQL", "JWT"],
-    link: "#",
-    gradient: "from-fuchsia-500 to-pink-500",
-    icon: "📁",
   },
   {
-    title: "Tele Health Myanmar",
-    description: "Telemedicine platform connecting patients with healthcare providers, featuring appointment scheduling, secure messaging, and medical records.",
-    technologies: ["React", "Laravel", "PostgreSQL", "WebSocket"],
-    link: "#",
-    gradient: "from-violet-400 to-purple-500",
-    icon: "🏥",
+    title: "Akaris.ai Course Platform API",
+    type: "Education",
+    description:
+      "Course platform API with Stripe Checkout, idempotent payment webhooks, Firebase authentication, enrollment access rules, and admin modules for courses, payments, and news.",
+    technologies: ["Express", "Prisma", "MySQL", "Stripe", "Firebase Auth"],
+    link: "https://akaris.ai/",
   },
   {
-    title: "Malaria & Dengue Surveillance",
-    description: "Disease surveillance system (MSS & DSS) for real-time tracking and reporting of malaria and dengue cases across Myanmar.",
-    technologies: ["React", "Node.js", "PostgreSQL", "Chart.js"],
-    link: "#",
-    gradient: "from-purple-500 to-indigo-600",
-    icon: "🖥️",
+    title: "PTE Education Platform",
+    type: "Education",
+    description:
+      "Web and mobile education platform with automated PTE score generation using speech recognition and speech-to-text features, plus appointment booking, payments, AWS deployment.",
+    technologies: ["Laravel", "React", "React Native", "MySQL", "AWS"],
+    link: "https://www.aigmapte.com",
+  },
+     {
+    title: "Student Tracker",
+    type: "Education Operations",
+    description:
+      "Student tracking web application supporting learner follow-up workflows and education operations.",
+    technologies: ["Laravel", "React", "MySQL"],
   },
   {
     title: "Myanmar Accountancy Council",
-    description: "Official web portal for MAC with member management, examination scheduling, certification tracking, and regulatory announcements.",
-    technologies: ["Laravel", "MySQL", "Bootstrap", "jQuery"],
-    link: "#",
-    gradient: "from-fuchsia-400 to-violet-500",
-    icon: "📊",
+    type: "Public Sector",
+    description:
+      "Public-sector accountancy system with structured application workflows, backend modules, database work, and payment integration.",
+    technologies: ["Laravel", "PHP", "MySQL", "Payment Integration"],
   },
+  {
+    title: "MSS & DSS - Malaria and Dengue Surveillance System",
+    type: "Healthcare",
+    description:
+      "WHO-supported disease surveillance system for malaria and dengue workflows, data collection, and reporting visibility.",
+    technologies: ["Laravel", "React", "MySQL", "Reporting"],
+  },
+  {
+    title: "LifeX Lifestyle Portal",
+    type: "Lifestyle Portal",
+    description:
+      "Lifestyle portal features including OTP login, subscription and renewal workflows, content feed, quizzes, points, courses, profiles, admin management, and React-Laravel REST API integration.",
+    technologies: ["React", "Laravel", "REST APIs", "OTP", "Admin CMS"],
+  } 
+   
 ];
 
 export default function Projects() {
@@ -69,105 +85,72 @@ export default function Projects() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="projects" className="py-20 relative overflow-hidden" ref={ref}>
-      <FloatingElements />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.h2 
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+    <section id="projects" className="section-shell" ref={ref}>
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={{ duration: 0.6 }}
-          className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-4"
+          className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end"
         >
-          Featured Projects
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto"
-        >
-          A collection of projects showcasing modern web development practices and creative problem-solving
-        </motion.p>
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -10, scale: 1.02 }}
-              className="group relative bg-[var(--card-bg)] backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-2xl transition-shadow duration-300"
-            >
-              {/* Gradient Header with Icon */}
-              <div className={`relative h-56 bg-gradient-to-br ${project.gradient} flex items-center justify-center overflow-hidden`}>
-                <motion.div
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-8xl opacity-90"
-                >
-                  {project.icon}
-                </motion.div>
-                {/* Overlay Effect */}
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300"></div>
-              </div>
+          <div className="max-w-3xl">
+            <p className="section-label mb-3">Projects</p>
+            <RevealHeading
+              text="Projects I've worked on."
+              className="text-4xl font-bold tracking-tight text-slate-950 dark:text-white"
+            />
+          </div>
+          <p className="max-w-md leading-7 text-slate-600 dark:text-slate-300">
+            A selection of AI, education, public-sector, healthcare, enterprise, e-commerce,
+            and payment integration work.
+          </p>
+        </motion.div>
 
-              {/* Content */}
-              <div className="p-6 space-y-4">
-                <div className="flex items-start justify-between">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+        <div className="grid gap-5 md:grid-cols-2">
+          {projects.map((project, index) => (
+            <TiltCard
+              key={project.title}
+              delay={(index % 2) * 0.1}
+              className={`rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-[border-color,box-shadow] hover:border-cyan-300 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900/72 dark:hover:border-cyan-700 ${
+                index === 0 ? "md:col-span-2" : ""
+              }`}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-bold text-cyan-700 dark:text-cyan-300">
+                    {project.type}
+                  </p>
+                  <h3 className="mt-2 text-2xl font-bold text-slate-950 dark:text-white">
                     {project.title}
                   </h3>
-                  <motion.div
-                    whileHover={{ rotate: 45, scale: 1.1 }}
-                    className="text-gray-400 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors"
+                </div>
+                {project.link ? (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full border border-slate-200 px-3 py-1 text-sm font-semibold text-slate-700 transition hover:border-cyan-700 hover:text-cyan-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-cyan-300 dark:hover:text-cyan-300"
                   >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </motion.div>
-                </div>
-
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {project.description}
-                </p>
-
-                {/* Technologies */}
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech, techIndex) => (
-                    <motion.span
-                      key={tech}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                      transition={{ duration: 0.3, delay: index * 0.1 + techIndex * 0.05 }}
-                      whileHover={{ scale: 1.05 }}
-                      className="px-3 py-1 bg-violet-100/80 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300 text-xs rounded-full border border-violet-200/50 dark:border-violet-800/30 font-medium"
-                    >
-                      {tech}
-                    </motion.span>
-                  ))}   
-                </div>
-
-                {/* Action Button */}
-                <motion.a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05, boxShadow: "0 10px 40px rgba(139, 92, 246, 0.3)" }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r ${project.gradient} text-white rounded-full font-medium shadow-md hover:shadow-lg transition-all`}
-                >
-                  <span className="text-sm">View Project</span>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </motion.a>
+                    Visit
+                  </a>
+                ) : null}
               </div>
 
-              {/* Hover Glow Effect */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                <div className={`absolute inset-0 bg-linear-to-br ${project.gradient} opacity-5 blur-xl`}></div>
+              <p className="mt-4 leading-7 text-slate-700 dark:text-slate-300">
+                {project.description}
+              </p>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {project.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
-            </motion.div>
+            </TiltCard>
           ))}
         </div>
       </div>
