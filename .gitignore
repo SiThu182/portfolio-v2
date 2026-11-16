@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local tooling and personal files (not part of the site)
+/.pnpm-store/
+/node-express-training/
+/output/
+/build_resume.py
+/source_resume_extracted.txt
